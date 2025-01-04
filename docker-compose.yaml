@@ -1,0 +1,10 @@
+services:
+  medical_front:
+    build:      
+      context: .
+    ports:
+      - 4200:4200
+    volumes:
+      - ./medical_front:/medical_front
+    environment:
+      - STYLE=css
