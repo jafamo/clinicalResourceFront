@@ -1,10 +1,20 @@
 services:
-  medical_front:
-    build:      
+  angular:
+    build:
       context: .
+      dockerfile: Dockerfile
     ports:
-      - 4200:4200
+      - "4200:4200" # Mapea el puerto del contenedor al host
     volumes:
-      - ./medical_front:/medical_front
-    environment:
-      - STYLE=css
+      - ./medical_front/src:/usr/src/medical_front/src # Sincroniza los archivos del proyecto para el desarrollo
+      - /usr/src/medical_front/node_modules # Evita conflictos entre dependencias locales y del contenedor
+    #command: npm start
+    command: npm start
+    stdin_open: true
+    tty: true
+    networks:
+      - angular_network
+
+networks:
+  angular_network:
+    external: true

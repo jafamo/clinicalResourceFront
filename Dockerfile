@@ -1,20 +1,25 @@
-FROM node:21
+# Usa una imagen oficial de Node.js
+FROM node:18
+
+# Crea el directorio de trabajo en el contenedor
+WORKDIR /usr/src/medical_front/
+
+RUN echo pwd
+RUN echo "entra"
+
+# Copia los archivos de configuración de la aplicación
+COPY  medical_front/* ./
 
 RUN npm install -g @angular/cli
 
-WORKDIR /
-RUN mkdir medical_front
-WORKDIR /medical_front
+# Instala las dependencias de Node.js
+RUN npm install
 
-ENV APP_NAME 'my-app'
-ENV ROUTING 'true'
-ENV STANDALONE 'false'
-ENV STRICT 'true'
-ENV STYLE 'scss'
+# Copia el resto de los archivos de la aplicación
+#COPY medical_front/* .
 
-CMD ng new $APP_NAME --routing=$ROUTING --standalone=$STANDALONE --strict=$STRICT --style=$STYLE \
-    && mv $APP_NAME/* . \
-    && rm -rf $APP_NAME \
-    && ng serve --host 0.0.0.0 --port 4200
-
+# Expone el puerto que utiliza Angular CLI por defecto
 EXPOSE 4200
+
+# Comando para iniciar el servidor de desarrollo de Angular
+CMD ["npm", "start"]
